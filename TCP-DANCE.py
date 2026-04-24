@@ -563,5 +563,11 @@ async def StarTinG():
         except asyncio.TimeoutError: print("Token ExpiRed ! , ResTartinG")
         except Exception as e: print(f"ErroR TcP - {e} => ResTarTinG ...")
 
+# Vercel-এর জন্য Flask অ্যাপটি সরাসরি এক্সপোজ করতে হবে
 if __name__ == '__main__':
-    asyncio.run(StarTinG())
+    app.run(host='0.0.0.0', port=5900)
+else:
+    # Vercel যখন ফাইলটি ইমপোর্ট করবে তখন এটি কাজ করবে
+    import asyncio
+    loop = asyncio.get_event_loop()
+    loop.create_task(StarTinG())
