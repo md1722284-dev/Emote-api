@@ -2,6 +2,7 @@ flask
 requests
 aiohttp
 protobuf
-pytz
-jwt
 pycryptodome
+cfonts
+pytz
+protobuf-decoder
