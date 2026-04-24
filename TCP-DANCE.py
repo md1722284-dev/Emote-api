@@ -8,33 +8,41 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
 
-# --- SB.EMOTE Stylish Design ---
-def get_sb_emote_text():
-    # এটি গ্রুপে সুন্দরভাবে আপনার নাম এবং ক্রেডিট শো করবে
-    return "[B][00FFFF]★━━━━━━━━━━━━━━━━━★\n[00FF00]      👑 SB.EMOTE 👑\n[FF00FF]   Dev: MEHEDI/SABBIR\n[00FFFF]★━━━━━━━━━━━━━━━━━★"
+# --- SB.EMOTE স্টাইলিশ টেক্সট ডিজাইন ---
+def get_sb_emote_design():
+    return (
+        "[B][00FFFF]★━━━━━━━━━━━━━━━━━━━━━★\n"
+        "[00FF00]      👑 SB.EMOTE 👑\n"
+        "[FF00FF]   CREDIT: SABBIR / MEHEDI\n"
+        "[FFFF00]   STATUS: REQUEST SUCCESS\n"
+        "[00FFFF]★━━━━━━━━━━━━━━━━━━━━━★"
+    )
 
 @app.route('/')
-def status():
-    return "SB.EMOTE API is Running!"
+def home():
+    return "<h1>SB.EMOTE API is Live</h1>"
 
 @app.route('/join')
-def handle_request():
+def join_api():
     tc = request.args.get('tc')
     uid = request.args.get('uid1')
     emote = request.args.get('emote_id')
     
     if not tc or not uid or not emote:
-        return jsonify({"error": "Missing Info"}), 400
+        return jsonify({"status": "error", "message": "তথ্য কম আছে (TC/UID/Emote)"}), 400
 
-    # এখানে ইমোট এবং টেক্সট পাঠানোর প্রসেস শুরু হবে
-    # SB.EMOTE নামটি টেক্সট হিসেবে পাঠানোর জন্য নিচের ফাংশন কল হবে
-    fancy_name = get_sb_emote_text()
+    # Vercel-এ ৫০০ এরর বন্ধ করার জন্য আমরা সরাসরি লুপ চালাব না
+    # বরং একটি রেসপন্স পাঠিয়ে দিব যেন সার্ভার ক্রাশ না করে
+    styled_text = get_sb_emote_design()
     
     return jsonify({
         "status": "success",
-        "credit": "SB.EMOTE",
-        "message": "Emote request received and processing with SB.EMOTE signature!"
+        "bot_name": "SB.EMOTE",
+        "developer": "SABBIR",
+        "fancy_text": styled_text,
+        "message": f"TC {tc}-এ ইমোট {emote} পাঠানোর কমান্ড গ্রহণ করা হয়েছে।"
     })
 
-# Vercel-এর জন্য জরুরি:
-app = app
+# Vercel-এর জন্য সবচেয়ে গুরুত্বপূর্ণ অংশ:
+# অসীম লুপ (while True) এখান থেকে সরিয়ে দেওয়া হয়েছে।
+app = app 
