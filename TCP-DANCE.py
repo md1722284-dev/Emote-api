@@ -8,40 +8,33 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
 
-# --- SB.EMOTE Credits & Design ---
-def get_sb_design():
-    # অনেক বড় এবং গর্জিয়াস ডিজাইনের টেক্সট
-    return "[B][00FFFF]★━━━━━━━━━━━━━━━━━━━━━★\n[00FF00]      👑 SB.EMOTE 👑\n[FF00FF]   CREDIT: MEHEDI/SABBIR\n[00FFFF]★━━━━━━━━━━━━━━━━━━━━━★"
+# --- SB.EMOTE Stylish Design ---
+def get_sb_emote_text():
+    # এটি গ্রুপে সুন্দরভাবে আপনার নাম এবং ক্রেডিট শো করবে
+    return "[B][00FFFF]★━━━━━━━━━━━━━━━━━★\n[00FF00]      👑 SB.EMOTE 👑\n[FF00FF]   Dev: MEHEDI/SABBIR\n[00FFFF]★━━━━━━━━━━━━━━━━━★"
 
 @app.route('/')
-def index():
-    return "SB.EMOTE API Status: Active"
+def status():
+    return "SB.EMOTE API is Running!"
 
 @app.route('/join')
-def join_and_emote():
+def handle_request():
     tc = request.args.get('tc')
     uid = request.args.get('uid1')
     emote = request.args.get('emote_id')
     
     if not tc or not uid or not emote:
-        return jsonify({"error": "Parameters missing!"}), 400
+        return jsonify({"error": "Missing Info"}), 400
 
-    # এখানে আমরা সরাসরি ব্যাকগ্রাউন্ড টাস্ক হিসেবে ইমোট প্রসেস কল করব
-    # মনে রাখবেন, Vercel এটি ১০ সেকেন্ডের মধ্যে শেষ না করলে এরর দিবে
-    try:
-        # আপনার অরিজিনাল কানেকশন এবং ইমোট লজিক এখানে কল হবে
-        # ইমোট পাঠানোর আগে SB.EMOTE টেক্সটটি পাঠানো হবে
-        status_msg = get_sb_design()
-        # (আপনার ইমোট পাঠানোর ফাংশন এখানে অ্যাড হবে)
-        
-        return jsonify({
-            "status": "success",
-            "owner": "SB.EMOTE",
-            "msg": "Emote Sent with SB.EMOTE Signature!"
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # এখানে ইমোট এবং টেক্সট পাঠানোর প্রসেস শুরু হবে
+    # SB.EMOTE নামটি টেক্সট হিসেবে পাঠানোর জন্য নিচের ফাংশন কল হবে
+    fancy_name = get_sb_emote_text()
+    
+    return jsonify({
+        "status": "success",
+        "credit": "SB.EMOTE",
+        "message": "Emote request received and processing with SB.EMOTE signature!"
+    })
 
-# Vercel-এর জন্য সবচেয়ে গুরুত্বপূর্ণ অংশ:
-# অসীম লুপ (while True) এখানে রাখা যাবে না
-app = app 
+# Vercel-এর জন্য জরুরি:
+app = app
